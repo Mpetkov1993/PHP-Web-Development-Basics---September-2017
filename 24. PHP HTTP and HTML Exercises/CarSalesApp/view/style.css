@@ -1,0 +1,59 @@
+body{
+  background-image: url("background.jpg");
+  background-size: 100%;
+}
+th, td{
+  font-size: large;
+  font-weight: lighter;
+  padding: 10px;
+  width: 10%;
+  text-align: center;
+  border: 3px solid black;
+  border-radius: 10px;
+
+}
+table{
+  margin-left: auto;
+  margin-right: auto;
+}
+th{
+  background-color: #03000a;
+  font-size: larger;
+  color: white;
+}
+td{
+  font-weight: bold;
+}
+a{
+  color: black;
+
+}
+a:hover{
+  color: white;
+}
+td.caa{
+  text-align: left;
+}
+img{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+input{
+  color: black;
+  font-size: medium;
+  background-color: transparent;
+  width: 100%;
+  padding: 5px 5px;
+  margin: 1px 0;
+  box-sizing: border-box;
+  border: transparent;
+}
+input:focus{
+  border: dotted;
+  border-radius: 5px;
+}
+input[type=submit]{
+  font-size: larger;
+  font-weight: bold;
+}
