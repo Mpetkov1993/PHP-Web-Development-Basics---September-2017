@@ -31,7 +31,6 @@ class SalesModel extends Model{
 	    $this->setCarId($car_id);
 	    $this->setCustomerId($customer_id);
         // Insert into sales
-		try{
             $stmt = $this->db->prepare("
                 INSERT INTO `cars`.`" . $this->table . "`
                   (`sale_date`,`amount`,`car_id`,`customer_id`)
@@ -43,11 +42,6 @@ class SalesModel extends Model{
             $stmt->execute();
             $sale_id = $this->db->lastInsertId();
             return($sale_id);
-        } catch (PDOException $e) {
-            print "Error!: " . $e->getMessage() . "<br/>";
-            include "view/error_page.php";
-        }
-        return false;
 	}
 	
 	public function readAll()

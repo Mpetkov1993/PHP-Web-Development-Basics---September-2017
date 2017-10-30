@@ -25,7 +25,6 @@ class CustomersModel extends Model
         $this->setName($first_name);
         $this->setFamily($last_name);
         // Insert into customers
-        try {
             $stmt = $this->db->prepare("
               INSERT INTO `cars`.`" . $this->table . "`
                 (`first_name`, `last_name`)
@@ -36,11 +35,6 @@ class CustomersModel extends Model
             $stmt->execute();
             $customer_id = $this->db->lastInsertId();
             return ($customer_id);
-        } catch (PDOException $e) {
-            print "Error!: " . $e->getMessage() . "<br/>";
-            include "view/error_page.php";
-        }
-        return false;
     }
 
     public function edit($customer_id, $first_name, $last_name)
