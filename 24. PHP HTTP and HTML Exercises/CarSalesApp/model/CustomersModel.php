@@ -37,7 +37,6 @@ class CustomersModel extends Model
             $customer_id = $this->db->lastInsertId();
             return ($customer_id);
         } catch (PDOException $e) {
-            $this->db->rollBack();
             print "Error!: " . $e->getMessage() . "<br/>";
             include "view/error_page.php";
         }

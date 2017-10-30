@@ -49,20 +49,28 @@ class MyController extends Controller
         if (isset($_GET['submit']) and (empty($_GET['car_make']) or empty($_GET['car_model']) or empty($_GET['car_year']) or empty($_GET['first_name']) or empty($_GET['last_name']) or empty($_GET['amount']))) {
             return $this->error();
         }
-        elseif (isset($_GET['car_make']) and isset($_GET['car_model']) and isset($_GET['car_year']) and isset($_GET['first_name']) and isset($_GET['last_name']) and isset($_GET['amount'])){
-            $car_make = $_GET['car_make'];
-            $car_model = $_GET['car_model'];
-            $car_year = $_GET['car_year'];
-            $car = new CarsModel($this->db);
-            $car_id = $car->create($car_make, $car_model, $car_year);
-            $first_name = $_GET['first_name'];
-            $last_name = $_GET['last_name'];
-            $customer = new CustomersModel($this->db);
-            $customer_id = $customer->create($first_name, $last_name);
-            $amount = $_GET['amount'];
-            $sale = new SalesModel($this->db);
-            $sale_id = $sale->create($amount, $car_id, $customer_id);
-            return $this->viewSales();
+        elseif (isset($_GET['car_make']) and isset($_GET['car_model']) and isset($_GET['car_year']) and isset($_GET['first_name']) and isset($_GET['last_name']) and isset($_GET['amount'])) {
+            try {
+                $this->db->beginTransaction();
+                $car_make = $_GET['car_make'];
+                $car_model = $_GET['car_model'];
+                $car_year = $_GET['car_year'];
+                $car = new CarsModel($this->db);
+                $car_id = $car->create($car_make, $car_model, $car_year);
+                $first_name = $_GET['first_name'];
+                $last_name = $_GET['last_name'];
+                $customer = new CustomersModel($this->db);
+                $customer_id = $customer->create($first_name, $last_name);
+                $amount = $_GET['amount'];
+                $sale = new SalesModel($this->db);
+                $sale_id = $sale->create($amount, $car_id, $customer_id);
+                $this->db->commit();
+                return $this->viewSales();
+            } catch (PDOException $e) {
+                $this->db->rollBack();
+                print "Error!: " . $e->getMessage() . "<br/>";
+                return $this->error();
+            }
         }
         include "view/add_sale.php";
     }
@@ -138,7 +146,7 @@ class MyController extends Controller
             return ($all);
         } catch (PDOException $e) {
             print "Error!: " . $e->getMessage() . "<br/>";
-            include "view/error_page.php";
+            return $this->error();
         }
     }
 

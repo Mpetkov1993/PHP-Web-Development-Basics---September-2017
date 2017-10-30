@@ -32,7 +32,6 @@ class CarsModel extends Model
 	    $this->setYear($year);
 		try {
             // Insert into car
-            $this->db->beginTransaction();
             $stmt = $this->db->prepare("
               INSERT INTO `cars`.`" . $this->table . "`
                 (`car_make`, `car_model`, `car_year`)
@@ -45,7 +44,6 @@ class CarsModel extends Model
             $car_id = $this->db->lastInsertId();
 			return $car_id;
 		 } catch (PDOException $e) {
-            $this->db->rollBack();
             print "Error!: " . $e->getMessage() . "<br/>";
             include "view/error_page.php";
         }

@@ -42,10 +42,8 @@ class SalesModel extends Model{
             $stmt->bindParam(3, $this->customer_id);
             $stmt->execute();
             $sale_id = $this->db->lastInsertId();
-            $this->db->commit();
             return($sale_id);
         } catch (PDOException $e) {
-            $this->db->rollBack();
             print "Error!: " . $e->getMessage() . "<br/>";
             include "view/error_page.php";
         }
