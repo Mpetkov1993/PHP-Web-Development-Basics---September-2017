@@ -1,4 +1,4 @@
-<form method="get">
+<form method="post">
     <input type="hidden" name="input" value="add">
     <table>
         <th>Car Details</th>

@@ -52,21 +52,21 @@ class MyController extends Controller
 
     private function addSale()
     {
-        if (isset($_GET['submit']) and (empty($_GET['car_make']) or empty($_GET['car_model']) or empty($_GET['car_year']) or empty($_GET['first_name']) or empty($_GET['last_name']) or empty($_GET['amount']))) {
+        if (isset($_POST['submit']) and (empty($_POST['car_make']) or empty($_POST['car_model']) or empty($_POST['car_year']) or empty($_POST['first_name']) or empty($_POST['last_name']) or empty($_POST['amount']))) {
             return $this->error();
-        } elseif (isset($_GET['car_make']) and isset($_GET['car_model']) and isset($_GET['car_year']) and isset($_GET['first_name']) and isset($_GET['last_name']) and isset($_GET['amount'])) {
+        } elseif (isset($_POST['car_make']) and isset($_POST['car_model']) and isset($_POST['car_year']) and isset($_POST['first_name']) and isset($_POST['last_name']) and isset($_POST['amount'])) {
             try {
                 $this->db->beginTransaction();
-                $car_make = $_GET['car_make'];
-                $car_model = $_GET['car_model'];
-                $car_year = $_GET['car_year'];
+                $car_make = $_POST['car_make'];
+                $car_model = $_POST['car_model'];
+                $car_year = $_POST['car_year'];
                 $car = new CarsModel($this->db);
                 $car_id = $car->create($car_make, $car_model, $car_year);
-                $first_name = $_GET['first_name'];
-                $last_name = $_GET['last_name'];
+                $first_name = $_POST['first_name'];
+                $last_name = $_POST['last_name'];
                 $customer = new CustomersModel($this->db);
                 $customer_id = $customer->create($first_name, $last_name);
-                $amount = $_GET['amount'];
+                $amount = $_POST['amount'];
                 $sale = new SalesModel($this->db);
                 $sale_id = $sale->create($amount, $car_id, $customer_id);
                 $this->db->commit();
@@ -82,13 +82,13 @@ class MyController extends Controller
 
     private function editSale()
     {
-        if (isset($_GET['submit']) and (empty($_GET['sale_id']) or empty($_GET['amount']))) {
+        if (isset($_POST['submit']) and (empty($_POST['sale_id']) or empty($_POST['amount']))) {
             return $this->error();
-        } elseif (isset($_GET['sale_id']) and isset($_GET['amount'])) {
+        } elseif (isset($_POST['sale_id']) and isset($_POST['amount'])) {
             try {
                 $this->db->beginTransaction();
-                $sale_id = $_GET['sale_id'];
-                $amount = $_GET['amount'];
+                $sale_id = $_POST['sale_id'];
+                $amount = $_POST['amount'];
                 $sale = new SalesModel($this->db);
                 $sale->edit($sale_id, $amount);
                 $this->db->commit();
@@ -116,14 +116,14 @@ class MyController extends Controller
 
     private function editCustomer()
     {
-        if (isset($_GET['submit']) and (empty($_GET['customer_id']) or empty($_GET['first_name']) or empty($_GET['last_name']))) {
+        if (isset($_POST['submit']) and (empty($_POST['customer_id']) or empty($_POST['first_name']) or empty($_POST['last_name']))) {
             return $this->error();
-        } elseif (isset($_GET['customer_id']) and isset($_GET['first_name']) and isset($_GET['last_name'])) {
+        } elseif (isset($_POST['customer_id']) and isset($_POST['first_name']) and isset($_POST['last_name'])) {
             try {
                 $this->db->beginTransaction();
-                $customer_id = $_GET['customer_id'];
-                $first_name = $_GET['first_name'];
-                $last_name = $_GET['last_name'];
+                $customer_id = $_POST['customer_id'];
+                $first_name = $_POST['first_name'];
+                $last_name = $_POST['last_name'];
                 $customer = new CustomersModel($this->db);
                 $customer->edit($customer_id, $first_name, $last_name);
                 $this->db->commit();
@@ -151,16 +151,16 @@ class MyController extends Controller
 
     private function editCar()
     {
-        if (isset($_GET['submit']) and (empty($_GET['car_id']) or empty($_GET['car_make']) or empty($_GET['car_model']) or empty($_GET['car_year']))) {
+        if (isset($_POST['submit']) and (empty($_POST['car_id']) or empty($_POST['car_make']) or empty($_POST['car_model']) or empty($_POST['car_year']))) {
             return $this->error();
         }
-        if (isset($_GET['car_id']) and isset($_GET['car_make']) and isset($_GET['car_model']) and isset($_GET['car_year'])) {
+        if (isset($_POST['car_id']) and isset($_POST['car_make']) and isset($_POST['car_model']) and isset($_POST['car_year'])) {
             try {
                 $this->db->beginTransaction();
-                $car_id = $_GET['car_id'];
-                $car_make = $_GET['car_make'];
-                $car_model = $_GET['car_model'];
-                $car_year = $_GET['car_year'];
+                $car_id = $_POST['car_id'];
+                $car_make = $_POST['car_make'];
+                $car_model = $_POST['car_model'];
+                $car_year = $_POST['car_year'];
                 $car = new CarsModel($this->db);
                 $car->edit($car_id, $car_make, $car_model, $car_year);
                 $this->db->commit();
@@ -178,7 +178,7 @@ class MyController extends Controller
     {
         try {
             $ownersList = new CarsModel($this->db);
-            $owners = $ownersList->searchOwner($_GET['brand']);
+            $owners = $ownersList->searchOwner($_POST['brand']);
             include "view/owner_by_make.php";
         } catch (PDOException $e) {
             print "Error!: " . $e->getMessage() . "<br/>";
